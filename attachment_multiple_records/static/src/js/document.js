@@ -1,4 +1,4 @@
-openerp.document_multiple_records = function(instance, m) {
+openerp.attachment_multiple_records = function(instance, m) {
 var _t = instance.web._t,
     QWeb = instance.web.qweb;
 

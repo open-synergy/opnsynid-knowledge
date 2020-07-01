@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
 <data>
-    <!--Add model list field-->
     <record model="ir.ui.view" id="view_document_file_multiple_models_form">
       <field name="name">ir.attachment.multiple.models</field>
       <field name="model">ir.attachment</field>
