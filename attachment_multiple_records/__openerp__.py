@@ -5,7 +5,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 {
     "name": "Document Management System for Multiple Records",
-    "version": "8.0.1.0.0",
+    "version": "8.0.2.0.0",
     "category": "Knowledge Management",
     "summary": "Document Management System for Multiple Records",
     "author": "Savoir-faire Linux, Odoo Community Association (OCA), "
@@ -29,4 +29,5 @@
     ],
     "installable": True,
     "auto_install": False,
+    "post_init_hook": "update_existing_attachment",
 }

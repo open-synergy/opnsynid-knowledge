@@ -7,3 +7,7 @@ from . import(
     models,
     wizards,
 )
+
+from .hooks import (
+    update_existing_attachment,
+)
