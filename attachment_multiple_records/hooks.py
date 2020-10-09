@@ -11,7 +11,9 @@ def update_existing_attachment(cr, registry):
 
     attachment_ids = obj_ir_attachment.search(cr, SUPERUSER_ID, [], order="id")
     attachment = obj_ir_attachment.browse(cr, SUPERUSER_ID, attachment_ids)
-    for data in attachment:
+    filtered_attachment = attachment.filtered(
+        lambda r: r.res_id != False and r.res_model != False)
+    for data in filtered_attachment:
         value = {
             "res_id": data.res_id,
             "res_model": data.res_model,
