@@ -9,13 +9,19 @@ def update_existing_attachment(cr, registry):
     obj_ir_attachment = registry["ir.attachment"]
     obj_ir_attachment_doc = registry["ir.attachment.document"]
 
-    attachment_ids = obj_ir_attachment.search(cr, SUPERUSER_ID, [], order="id")
-    attachment = obj_ir_attachment.browse(cr, SUPERUSER_ID, attachment_ids)
-    for data in attachment:
-        value = {
-            "res_id": data.res_id,
-            "res_model": data.res_model,
-            "res_name": data.res_name,
-            "attachment_id": data.id,
-        }
-        obj_ir_attachment_doc.create(cr, SUPERUSER_ID, value)
+    criteria = [
+        ("res_id", "!=", False),
+        ("res_model", "!=", False),
+    ]
+    attachment_ids = \
+        obj_ir_attachment.search(cr, SUPERUSER_ID, criteria, order="id")
+    if attachment_ids:
+        attachment = obj_ir_attachment.browse(cr, SUPERUSER_ID, attachment_ids)
+        for data in attachment:
+            value = {
+                "res_id": data.res_id,
+                "res_model": data.res_model,
+                "res_name": data.res_name,
+                "attachment_id": data.id,
+            }
+            obj_ir_attachment_doc.create(cr, SUPERUSER_ID, value)
