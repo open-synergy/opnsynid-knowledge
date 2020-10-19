@@ -10,8 +10,8 @@ def update_existing_attachment(cr, registry):
     obj_ir_attachment_doc = registry["ir.attachment.document"]
 
     criteria = [
-        ("res_id", "=", True),
-        ("res_model", "=", True),
+        ("res_id", "!=", False),
+        ("res_model", "!=", False),
     ]
     attachment_ids = \
         obj_ir_attachment.search(cr, SUPERUSER_ID, criteria, order="id")
