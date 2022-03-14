@@ -3,6 +3,7 @@
 # Copyright 2020 OpenSynergy Indonesia
 # Copyright 2020 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+# pylint=C8108
 
 from openerp import api, fields, models
 
@@ -15,7 +16,7 @@ class IrAttachment(models.Model):
         "res_model",
         "res_id",
     )
-    def _name_get_resname(self):
+    def _compute_get_resname(self):
         for attachment in self:
             attachment.res_name = False
             model_object = attachment.res_model
@@ -27,22 +28,21 @@ class IrAttachment(models.Model):
                 if res_name:
                     field = self._columns.get("res_name", False)
                     if field and len(res_name) > field.size:
-                        res_name = res_name[:field.size - 3] + '...'
+                        res_name = res_name[: field.size - 3] + "..."
                 attachment.res_name = res_name
 
     @api.model
-    def _get_related_model_documents(self, operator, value):
+    def _search_related_model_documents(self, operator, value):
         context = self.env.context
         res = [("id", "in", [])]
-        obj_ir_attachment_document = \
-            self.env["ir.attachment.document"]
+        obj_ir_attachment_document = self.env["ir.attachment.document"]
 
         criteria = [
             ("res_model", "=", context.get("model")),
-            ("res_id", "=", context.get("model_id"))]
+            ("res_id", "=", context.get("model_id")),
+        ]
 
-        document_ids = \
-            obj_ir_attachment_document.search(criteria)
+        document_ids = obj_ir_attachment_document.search(criteria)
 
         if document_ids:
             criteria_attachment = [
@@ -55,18 +55,18 @@ class IrAttachment(models.Model):
     attachment_document_ids = fields.One2many(
         string="Records",
         comodel_name="ir.attachment.document",
-        inverse_name="attachment_id"
+        inverse_name="attachment_id",
     )
     res_name = fields.Char(
         string="Resource Name",
         size=128,
-        compute="_name_get_resname",
+        compute="_compute_get_resname",
         store=True,
     )
     related_document = fields.Boolean(
         string="Related Document",
         compute=lambda self: True,
-        search="_get_related_model_documents",
+        search="_search_related_model_documents",
     )
 
     @api.model
@@ -74,17 +74,18 @@ class IrAttachment(models.Model):
         _super = super(IrAttachment, self)
         result = _super.create(values)
 
-        obj_ir_attachment_document = \
-            self.env["ir.attachment.document"]
+        obj_ir_attachment_document = self.env["ir.attachment.document"]
 
         if "res_model" in values and "res_id" in values:
             res_name = result.res_name
-            obj_ir_attachment_document.create({
-                "attachment_id": result.id,
-                "res_model": values["res_model"],
-                "res_id": values["res_id"],
-                "res_name": values.get("res_name", res_name),
-            })
+            obj_ir_attachment_document.create(
+                {
+                    "attachment_id": result.id,
+                    "res_model": values["res_model"],
+                    "res_id": values["res_id"],
+                    "res_name": values.get("res_name", res_name),
+                }
+            )
         return result
 
     @api.multi
@@ -94,12 +95,9 @@ class IrAttachment(models.Model):
 
         context = self._context
 
-        obj_ir_attachment_document = \
-            self.env["ir.attachment.document"]
-        res_model = \
-            context.get("multiple_records_res_model")
-        res_id = \
-            context.get("multiple_records_res_id")
+        obj_ir_attachment_document = self.env["ir.attachment.document"]
+        res_model = context.get("multiple_records_res_model")
+        res_id = context.get("multiple_records_res_id")
 
         for document in self:
             if res_model and res_id:
@@ -108,7 +106,6 @@ class IrAttachment(models.Model):
                     ("res_id", "=", res_id),
                     ("attachment_id", "=", document.id),
                 ]
-                ids_to_unlink = \
-                    obj_ir_attachment_document.search(criteria)
+                ids_to_unlink = obj_ir_attachment_document.search(criteria)
                 result = ids_to_unlink.unlink()
         return result
