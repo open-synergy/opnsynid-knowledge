@@ -3,7 +3,7 @@
 # Copyright 2020 OpenSynergy Indonesia
 # Copyright 2020 PT. Simetri Sinergi Indonesia
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-from openerp import api, fields, models, _
+from openerp import _, api, fields, models
 from openerp.exceptions import Warning as UserError
 
 
@@ -21,8 +21,7 @@ class IrAttachmentExistingDoc(models.TransientModel):
 
     @api.multi
     def action_apply(self):
-        obj_ir_attachment_document = \
-            self.env["ir.attachment.document"]
+        obj_ir_attachment_document = self.env["ir.attachment.document"]
         active_model = self.env.context.get("model", False)
         active_ids = self.env.context.get("ids", False)
         obj_ir_model = self.env[active_model]
@@ -31,8 +30,8 @@ class IrAttachmentExistingDoc(models.TransientModel):
 
         if not self.attachment_ids:
             raise UserError(
-                _("Error"),
-                _("You have to select at least 1 Document. And try again"))
+                _("Error"), _("You have to select at least 1 Document. And try again")
+            )
 
         for attachment in self.attachment_ids:
             data = {

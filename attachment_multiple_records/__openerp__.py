@@ -9,7 +9,7 @@
     "category": "Knowledge Management",
     "summary": "Document Management System for Multiple Records",
     "author": "Savoir-faire Linux, Odoo Community Association (OCA), "
-              "PT. Simetri Sinergi Indonesia, OpenSynergy Indonesia",
+    "PT. Simetri Sinergi Indonesia, OpenSynergy Indonesia",
     "website": "https://simetri-sinergi.id",
     "license": "AGPL-3",
     "depends": [
@@ -21,12 +21,9 @@
         "views/ir_attachment_view.xml",
         "attachment_multiple_record.xml",
     ],
-    "qweb": [
-        "static/src/xml/document.xml"
-    ],
+    "qweb": ["static/src/xml/document.xml"],
     "test": [],
-    "demo": [
-    ],
+    "demo": [],
     "installable": True,
     "auto_install": False,
     "post_init_hook": "update_existing_attachment",

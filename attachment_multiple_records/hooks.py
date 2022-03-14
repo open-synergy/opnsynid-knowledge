@@ -13,8 +13,7 @@ def update_existing_attachment(cr, registry):
         ("res_id", "!=", False),
         ("res_model", "!=", False),
     ]
-    attachment_ids = \
-        obj_ir_attachment.search(cr, SUPERUSER_ID, criteria, order="id")
+    attachment_ids = obj_ir_attachment.search(cr, SUPERUSER_ID, criteria, order="id")
     if attachment_ids:
         attachment = obj_ir_attachment.browse(cr, SUPERUSER_ID, attachment_ids)
         for data in attachment:
